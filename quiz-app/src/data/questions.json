@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "question": "What is the capital of France?",
+    "options": ["Berlin", "Madrid", "Paris", "Rome"],
+    "answer": "Paris"
+  },
+  {
+    "id": 2,
+    "question": "Which language is used for styling web pages?",
+    "options": ["HTML", "JQuery", "CSS", "XML"],
+    "answer": "CSS"
+  },
+  {
+    "id": 3,
+    "question": "Which is not a JavaScript framework?",
+    "options": ["React", "Angular", "Vue", "Django"],
+    "answer": "Django"
+  },
+  {
+    "id": 4,
+    "question": "What does JSON stand for?",
+    "options": [
+      "JavaScript Object Notation",
+      "Java Source Open Network",
+      "JavaScript Organized Notation",
+      "Java Standard Output Network"
+    ],
+    "answer": "JavaScript Object Notation"
+  },
+  {
+    "id": 5,
+    "question": "Which company developed React?",
+    "options": ["Google", "Facebook", "Microsoft", "Apple"],
+    "answer": "Facebook"
+  },
+  {
+    "id": 6,
+    "question": "Inside which HTML element do we put JavaScript?",
+    "options": ["<js>", "<javascript>", "<script>", "<code>"],
+    "answer": "<script>"
+  },
+  {
+    "id": 7,
+    "question": "Which hook is used for state management in React?",
+    "options": ["useEffect", "useState", "useContext", "useReducer"],
+    "answer": "useState"
+  },
+  {
+    "id": 8,
+    "question": "Which symbol is used for comments in JavaScript?",
+    "options": ["//", "<!-- -->", "#", "**"],
+    "answer": "//"
+  },
+  {
+    "id": 9,
+    "question": "What is the default port for React development server?",
+    "options": ["3000", "8080", "5000", "4200"],
+    "answer": "3000"
+  },
+  {
+    "id": 10,
+    "question": "Which method is used to render React content to the DOM?",
+    "options": [
+      "ReactDOM.render()",
+      "render()",
+      "React.render()",
+      "DOM.render()"
+    ],
+    "answer": "ReactDOM.render()"
+  }
+]

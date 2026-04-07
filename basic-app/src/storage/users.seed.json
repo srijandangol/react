@@ -1,0 +1,20 @@
+[
+  {
+    "id": "u_admin_1",
+    "name": "Admin",
+    "email": "admin@demo.com",
+    "password": "Admin123!",
+    "role": "admin",
+    "phone": "111-111-1111",
+    "address": "1 Admin Street"
+  },
+  {
+    "id": "u_user_1",
+    "name": "Regular User",
+    "email": "user@demo.com",
+    "password": "User123!",
+    "role": "user",
+    "phone": "222-222-2222",
+    "address": "2 User Avenue"
+  }
+]
