@@ -18,7 +18,6 @@ export const Products: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | undefined>();
 
-  // ✅ Pagination state (NEW)
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
@@ -26,7 +25,6 @@ export const Products: React.FC = () => {
 
   const { products, addProduct, updateProduct, deleteProduct } = useProducts();
 
-  // Modal handlers
   const handleOpenModal = (product?: Product) => {
     setSelectedProduct(product);
     setIsModalOpen(true);
@@ -47,7 +45,6 @@ export const Products: React.FC = () => {
     handleCloseModal();
   };
 
-  // ❗ FIX: now receives full product (not id)
   const handleDelete = (product: Product) => {
     deleteProduct(product.id);
   };

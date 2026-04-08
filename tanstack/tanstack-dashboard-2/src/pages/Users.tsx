@@ -71,6 +71,7 @@ export const UsersPage: React.FC = () => {
       {/* Table */}
       <UsersTable
         data={data?.users || []}
+        totalItems={data?.total ?? 0}
         onEdit={handleOpenModal}
         onDelete={handleDelete}
         isLoading={isLoading}

@@ -1,17 +1,17 @@
 /**
  * UsersTable Component - Table displaying users with TanStack Table
  */
-
-import React, { useMemo } from 'react';
-import type { ColumnDef, OnChangeFn, PaginationState } from '@tanstack/react-table';
-import type { User } from '../types';
-import { formatDate } from '../../utils';
-import { UserActions } from './UserActions';
-import { getUserStatusColor } from '../utils';
-import { DataTable } from '../../../components/data-table';
+import React, { useMemo } from "react";
+import type { ColumnDef, OnChangeFn, PaginationState } from "@tanstack/react-table";
+import type { User } from "../types";
+import { formatDate } from "../../utils";
+import { UserActions } from "./UserActions";
+import { getUserStatusColor } from "../utils";
+import { DataTable } from "../../../components/data-table";
 
 interface UsersTableProps {
   data: User[];
+  totalItems: number;
   onEdit: (user: User) => void;
   onDelete: (user: User) => void;
   isLoading?: boolean;
@@ -21,6 +21,7 @@ interface UsersTableProps {
 
 export const UsersTable: React.FC<UsersTableProps> = ({
   data,
+  totalItems,
   onEdit,
   onDelete,
   isLoading = false,
@@ -30,35 +31,47 @@ export const UsersTable: React.FC<UsersTableProps> = ({
   const columns = useMemo<ColumnDef<User>[]>(
     () => [
       {
-        accessorKey: 'name',
-        header: 'Name',
+        accessorKey: "name",
+        header: "Name",
+        filterFn: "includesString",
+        enableColumnFilter: true,
+        meta: { enableColumnFilter: true },
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: 'email',
-        header: 'Email',
+        accessorKey: "email",
+        header: "Email",
+        filterFn: "includesString",
+        enableColumnFilter: true,
+        meta: { enableColumnFilter: true },
         cell: (info) => info.getValue(),
       },
       {
-        accessorKey: 'role',
-        header: 'Role',
+        accessorKey: "role",
+        header: "Role",
+        filterFn: "includesString",
+        enableColumnFilter: true,
+        meta: { enableColumnFilter: true },
         cell: (info) => {
-          const role = info.getValue() as User['role'];
+          const role = info.getValue() as User["role"];
           return (
-            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-800">
+            <span className="rounded-full bg-purple-100 px-3 py-1 text-xs font-semibold text-purple-800">
               {role}
             </span>
           );
         },
       },
       {
-        accessorKey: 'status',
-        header: 'Status',
+        accessorKey: "status",
+        header: "Status",
+        filterFn: "includesString",
+        enableColumnFilter: true,
+        meta: { enableColumnFilter: true },
         cell: (info) => {
-          const status = info.getValue() as User['status'];
+          const status = info.getValue() as User["status"];
           return (
             <span
-              className={`px-3 py-1 rounded-full text-xs font-semibold ${getUserStatusColor(
+              className={`rounded-full px-3 py-1 text-xs font-semibold ${getUserStatusColor(
                 status
               )}`}
             >
@@ -68,14 +81,16 @@ export const UsersTable: React.FC<UsersTableProps> = ({
         },
       },
       {
-        accessorKey: 'createdAt',
-        header: 'Created',
+        accessorKey: "createdAt",
+        header: "Created",
         cell: (info) => formatDate(info.getValue() as string),
       },
       {
-        accessorKey: 'actions',
-        header: 'Actions',
+        id: "actions",
+        header: "Actions",
         enableSorting: false,
+        enableColumnFilter: false,
+        meta: { enableColumnFilter: false },
         cell: (info) => (
           <UserActions
             user={info.row.original}
@@ -97,6 +112,8 @@ export const UsersTable: React.FC<UsersTableProps> = ({
       emptyMessage="No users match your filters."
       pagination={pagination}
       onPaginationChange={onPaginationChange}
+      manualPagination
+      totalItems={totalItems}
       enableGlobalFilter
       searchPlaceholder="Search users by name, email, role, or status…"
     />
