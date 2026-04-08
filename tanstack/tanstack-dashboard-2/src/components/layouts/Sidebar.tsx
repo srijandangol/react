@@ -15,7 +15,6 @@ const links: SidebarLink[] = [
   { label: "Dashboard", href: "/dashboard", icon: "📊" },
   { label: "Users", href: "/users", icon: "👥" },
   { label: "Products", href: "/products", icon: "📦" },
-  { label: "Settings", href: "/settings", icon: "⚙️" },
 ];
 
 export const Sidebar: React.FC = () => {
