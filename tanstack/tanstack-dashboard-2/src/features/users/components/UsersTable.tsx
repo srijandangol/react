@@ -34,8 +34,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({
         accessorKey: "name",
         header: "Name",
         filterFn: "includesString",
-        enableColumnFilter: true,
-        meta: { enableColumnFilter: true },
+        // meta: { enableColumnFilter: true },s
         cell: (info) => info.getValue(),
       },
       {
