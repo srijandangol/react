@@ -1,83 +1,119 @@
-
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { useState } from 'react'
-import './App.css'
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { getTodos, addTodo, updateTodo, deleteTodo } from "./fakeApi";
+import "./App.css";
 
 interface Todo {
-  id: number
-  title: string
-  completed: boolean
-  userId: number
+  id: number;
+  title: string;
+  completed: boolean;
 }
 
 function App() {
-  const [newTodo, setNewTodo] = useState('')
-  const queryClient = useQueryClient()
+  const [input, setInput] = useState("");
+  const [editing, setEditing] = useState<Todo | null>(null);
+  const queryClient = useQueryClient();
 
-  const {data, isLoading, error} = useQuery({
-    queryKey: ['todos'],
-    queryFn: getTodos
-  })
+  // FETCH
+  const { data: todos = [], isLoading } = useQuery({
+    queryKey: ["todos"],
+    queryFn: getTodos,
+  });
 
-  const addTodoMutation = useMutation({
+  // ADD
+  const addMutation = useMutation({
     mutationFn: addTodo,
     onSuccess: () => {
-      // Invalidate and refetch todos
-      queryClient.invalidateQueries({ queryKey: ['todos'] })
-      setNewTodo('')
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
     },
-  })
+  });
+
+  // UPDATE
+  const updateMutation = useMutation({
+    mutationFn: updateTodo,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+      setEditing(null);
+      setInput("");
+    },
+  });
+
+  // DELETE
+  const deleteMutation = useMutation({
+    mutationFn: deleteTodo,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+    },
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (newTodo.trim()) {
-      addTodoMutation.mutate({ title: newTodo, completed: false, userId: 1 })
-    }
-  }
+    e.preventDefault();
+    if (!input.trim()) return;
 
-  if (isLoading) return <p>Loading...</p>
-  if (error) return <p>Error fetching data</p>
+    if (editing) {
+      updateMutation.mutate({ ...editing, title: input });
+    } else {
+      addMutation.mutate({
+        title: input,
+        completed: false,
+      });
+    }
+
+    setInput("");
+  };
 
   return (
-    <>
-      <h1>Todos</h1>
+    <div className="container">
+      <h1>TanStack Todo</h1>
+
       <form onSubmit={handleSubmit}>
         <input
-          type="text"
-          value={newTodo}
-          onChange={(e) => setNewTodo(e.target.value)}
-          placeholder="Add new todo"
-          disabled={addTodoMutation.isPending}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Add task..."
         />
-        <button type="submit" disabled={addTodoMutation.isPending}>
-          {addTodoMutation.isPending ? 'Adding...' : 'Add Todo'}
-        </button>
+        <button type="submit">{editing ? "Update" : "Add"}</button>
       </form>
-      {addTodoMutation.isError && <p>Error adding todo</p>}
+
+      {isLoading && <p>Loading...</p>}
+
+      {todos.length === 0 && <p>No tasks yet</p>}
+
       <ul>
-        {data?.map((todo: Todo) => (
-          <li key={todo.id}>{todo.title} - {todo.completed ? 'Done' : 'Pending'}</li>
+        {todos.map((todo: Todo) => (
+          <li key={todo.id} className={todo.completed ? "completed" : ""}>
+            <span>{todo.title}</span>
+
+            <div className="actions">
+              <button
+                onClick={() =>
+                  updateMutation.mutate({ ...todo, completed: true })
+                }
+              >
+                Complete
+              </button>
+
+              <button
+                onClick={() => {
+                  setEditing(todo);
+                  setInput(todo.title);
+                }}
+              >
+                Edit
+              </button>
+
+              <button
+                onClick={() => deleteMutation.mutate(todo.id)}
+                className="delete"
+              >
+                Delete
+              </button>
+            </div>
+          </li>
         ))}
       </ul>
-    </>
-  )
+    </div>
+  );
 }
 
-const getTodos = async (): Promise<Todo[]> => {
-  await new Promise((resolve) => setTimeout(resolve, 1500))
-  const response = await fetch('https://jsonplaceholder.typicode.com/todos')
-  return await response.json()
-}
-
-const addTodo = async (newTodo: Omit<Todo, 'id'>): Promise<Todo> => {
-  const response = await fetch('https://jsonplaceholder.typicode.com/todos', {
-    method: 'POST',
-    body: JSON.stringify(newTodo),
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8',
-    },
-  })
-  return await response.json()
-}
-
-export default App
+export default App;
