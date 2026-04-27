@@ -5,6 +5,7 @@
 import React from 'react';
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import { Dashboard } from '../pages/Dashboard';
+import { Users } from '../pages/Users';
 import { Products } from '../pages/Products';
 import { Navbar } from '../components/layouts/Navbar';
 import { Sidebar } from '../components/layouts/Sidebar';
@@ -43,7 +44,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/users',
-        element: <Dashboard />,
+        element: <Users />,
       },
       {
         path: '/products',

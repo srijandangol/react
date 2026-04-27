@@ -63,34 +63,34 @@ function App() {
   };
 
   return (
-    <div className="container">
+    <div className='container'>
       <h1>TanStack Todo</h1>
 
       <form onSubmit={handleSubmit}>
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Add task..."
+          placeholder='Add task...'
         />
-        <button type="submit">{editing ? "Update" : "Add"}</button>
+        <button type='submit'>{editing ? "Update" : "Add"}</button>
       </form>
 
-      {isLoading && <p>Loading...</p>}
-
-      {todos.length === 0 && <p>No tasks yet</p>}
+      {isLoading ? (
+        <p>Loading...</p>) : todos.length === 0 ? (
+        <p>No tasks yet</p> ) : null}
 
       <ul>
         {todos.map((todo: Todo) => (
           <li key={todo.id} className={todo.completed ? "completed" : ""}>
             <span>{todo.title}</span>
 
-            <div className="actions">
+            <div className='actions'>
               <button
                 onClick={() =>
-                  updateMutation.mutate({ ...todo, completed: true })
+                  updateMutation.mutate({ ...todo, completed: !todo.completed })
                 }
               >
-                Complete
+                {todo.completed ? "Undo" : "Complete"}
               </button>
 
               <button
@@ -104,7 +104,7 @@ function App() {
 
               <button
                 onClick={() => deleteMutation.mutate(todo.id)}
-                className="delete"
+                className='delete'
               >
                 Delete
               </button>
